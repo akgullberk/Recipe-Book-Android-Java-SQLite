@@ -11,6 +11,8 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
@@ -31,6 +33,7 @@ public class RecipeActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> activityResultLauncher;
     ActivityResultLauncher<String> permissionLauncher;
     Bitmap selectedImage;
+    SQLiteDatabase database;
 
 
     @Override
@@ -45,15 +48,35 @@ public class RecipeActivity extends AppCompatActivity {
     }
 
     public void save(View view){
-        String name = binding.nameText.getText().toString();
-        String name2 = binding.nameText2.getText().toString();
-        String year = binding.yearText.getText().toString();
+        String recipe = binding.RecipeText.getText().toString();
+        String ingredients = binding.ingredientsText.getText().toString();
+        String how = binding.howText.getText().toString();
 
         Bitmap smallImage = makeSmallerImage(selectedImage,300);
 
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         smallImage.compress(Bitmap.CompressFormat.PNG,50,outputStream);
         byte[] byteArray= outputStream.toByteArray();
+        
+        try{
+            database = this.openOrCreateDatabase("Recipes",MODE_PRIVATE,null);
+            database.execSQL("CREATE TABLE IF NOT EXISTS recipes(id INTEGER PRIMARY KEY,recipename VARCHAR,ingredient VARCHAR,how Varchar,image BLOB)");
+
+            String sqlString = "INSERT INTO recipes(recipename,ingredient,how,image) VALUES(?,?,?,?)";
+            SQLiteStatement sqLiteStatement = database.compileStatement(sqlString);
+            sqLiteStatement.bindString(1,recipe);
+            sqLiteStatement.bindString(2,ingredients);
+            sqLiteStatement.bindString(3,how);
+            sqLiteStatement.bindBlob(4,byteArray);
+            sqLiteStatement.execute();
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
+        Intent intent = new Intent(RecipeActivity.this,MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
 
 
     }
