@@ -10,66 +10,61 @@
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="264dp"
-        android:layout_height="260dp"
+        android:layout_width="370dp"
+        android:layout_height="178dp"
         android:onClick="selectImage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.125"
+        app:layout_constraintVertical_bias="0.039"
         app:srcCompat="@drawable/selectimage" />
+
+    <EditText
+        android:id="@+id/RecipeText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:hint="Enter Recipe Name"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+
+    <EditText
+        android:id="@+id/ingredientsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:hint="Enter Ingredients"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/RecipeText" />
+
+    <EditText
+        android:id="@+id/howText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="How to Make"
+        android:inputType="textMultiLine"
+        android:scrollbars="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ingredientsText" />
 
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:onClick="save"
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/howText" />
-
-    <EditText
-        android:id="@+id/howText"
-        android:layout_width="266dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
-        android:ems="10"
-        android:hint="How to Make "
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ingredientsText" />
-
-    <EditText
-        android:id="@+id/ingredientsText"
-        android:layout_width="266dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="Enter Ingredients"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RecipeText" />
-
-    <EditText
-        android:id="@+id/RecipeText"
-        android:layout_width="266dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="4dp"
-        android:ems="10"
-        android:hint="Enter Recipe Name"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
