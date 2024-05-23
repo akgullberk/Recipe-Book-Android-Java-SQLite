@@ -2,6 +2,7 @@ package com.example.recipebook;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
     ArrayList<Recipe> recipeArrayList;
+    RecipeAdapter recipeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         recipeArrayList=new ArrayList<>();
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recipeAdapter = new RecipeAdapter(recipeArrayList);
+        binding.recyclerView.setAdapter(recipeAdapter);
+
 
         getData();
 
@@ -49,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
                 int id = cursor.getInt(idIx);
                 Recipe recipe = new Recipe(name,id);
                 recipeArrayList.add(recipe);
-
-
             }
+
+            recipeAdapter.notifyDataSetChanged();
 
             cursor.close();
         }catch (Exception e){
