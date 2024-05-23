@@ -83,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(item.getItemId()==R.id.add_recipe){
             Intent intent = new Intent(this, RecipeActivity.class);
+            intent.putExtra("info","new");
+
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

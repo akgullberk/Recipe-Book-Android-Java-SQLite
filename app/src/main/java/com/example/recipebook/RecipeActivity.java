@@ -11,9 +11,11 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +47,49 @@ public class RecipeActivity extends AppCompatActivity {
 
         registerLauncher();
 
+        database = this.openOrCreateDatabase("Recipes",MODE_PRIVATE,null);
+
+        Intent intent = getIntent();
+        String info = intent.getStringExtra("info");
+
+        if(info.equals("new")){
+            binding.RecipeText.setText("");
+            binding.ingredientsText.setText("");
+            binding.howText.setText("");
+            binding.button.setVisibility(View.VISIBLE);
+            binding.imageView2.setImageResource(R.drawable.selectimage);
+        }else{
+            int recipeId = intent.getIntExtra("recipeId",0);
+            binding.button.setVisibility(View.INVISIBLE);
+
+            try{
+
+                Cursor cursor = database.rawQuery("SELECT * FROM recipes WHERE id = ?",new String[]{String.valueOf(recipeId)});
+
+                int recipeNameIx = cursor.getColumnIndex("recipename");
+                int ingredientsTextIx = cursor.getColumnIndex("ingredient");
+                int howTextIx = cursor.getColumnIndex("how");
+                int imageIx= cursor.getColumnIndex("image");
+
+                while (cursor.moveToNext()){
+                    binding.RecipeText.setText(cursor.getString(recipeNameIx));
+                    binding.ingredientsText.setText(cursor.getString(ingredientsTextIx));
+                    binding.howText.setText(cursor.getString(howTextIx));
+
+                    byte[] bytes = cursor.getBlob(imageIx);
+                    Bitmap bitmap= BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                    binding.imageView2.setImageBitmap(bitmap );
+
+                }
+
+                cursor.close();
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
     }
 
     public void save(View view){
@@ -59,7 +104,7 @@ public class RecipeActivity extends AppCompatActivity {
         byte[] byteArray= outputStream.toByteArray();
         
         try{
-            database = this.openOrCreateDatabase("Recipes",MODE_PRIVATE,null);
+
             database.execSQL("CREATE TABLE IF NOT EXISTS recipes(id INTEGER PRIMARY KEY,recipename VARCHAR,ingredient VARCHAR,how Varchar,image BLOB)");
 
             String sqlString = "INSERT INTO recipes(recipename,ingredient,how,image) VALUES(?,?,?,?)";

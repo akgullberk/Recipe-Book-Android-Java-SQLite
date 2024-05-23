@@ -1,5 +1,7 @@
 package com.example.recipebook;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +30,17 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecipeHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecipeHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.binding.recyclerViewTextView.setText(recipeArrayList.get(position).name);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(holder.itemView.getContext(), RecipeActivity.class);
+                intent.putExtra("info","old");
+                intent.putExtra("recipeId",recipeArrayList.get(position).id);
+                holder.itemView.getContext().startActivity(intent);
+            }
+        });
 
     }
 
